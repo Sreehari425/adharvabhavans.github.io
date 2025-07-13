@@ -65,7 +65,8 @@ export class MovementController {
         const actualSpeed = (Math.pow(this.currentSpeed, 3) * 7.0) + 5.0;
                 
         const controls = this.cameraController.getControls();
-        if (this.cameraController.getCurrentMode() !== MODES.EXPLORE || !controls.isLocked) return;
+        const isTouch = 'ontouchstart' in window;
+        if (this.cameraController.getCurrentMode() !== MODES.EXPLORE || (!controls.isLocked && !isTouch)) return;
         
         if (this.moveForward) controls.moveForward(actualSpeed * delta);
         if (this.moveBackward) controls.moveForward(-actualSpeed * delta);

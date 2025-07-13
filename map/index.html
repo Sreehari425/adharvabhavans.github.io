@@ -23,5 +23,23 @@
     }
     </script>
     <script type="module" src="map.js"></script>
+    <!-- D-pad (WASD) on the left -->
+    <div id="mobile-dpad" style="display:none; position:fixed; bottom:2rem; left:2rem; z-index:1001;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <button class="move-btn" data-move="up"    style="width:48px; height:48px; border-radius:50%; background:#222c; color:#fff; font-size:1.5rem; border:none; margin-bottom:4px;">&#9650;</button>
+        <div style="display:flex; flex-direction:row; gap:8px;">
+          <button class="move-btn" data-move="left"  style="width:48px; height:48px; border-radius:50%; background:#222c; color:#fff; font-size:1.5rem; border:none;">&#9664;</button>
+          <button class="move-btn" data-move="down"  style="width:48px; height:48px; border-radius:50%; background:#222c; color:#fff; font-size:1.5rem; border:none;">&#9660;</button>
+          <button class="move-btn" data-move="right" style="width:48px; height:48px; border-radius:50%; background:#222c; color:#fff; font-size:1.5rem; border:none;">&#9654;</button>
+        </div>
+      </div>
+    </div>
+    <!-- Up/Down (jump/crouch) on the right -->
+    <div id="mobile-updown" style="display:none; position:fixed; bottom:2.5rem; right:2.5rem; z-index:1001;">
+      <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <button class="move-btn" data-move="jump"  style="width:48px; height:48px; border-radius:50%; background:#2a5c; color:#fff; font-size:1.2rem; border:none;">&#8679;</button>
+        <button class="move-btn" data-move="downward" style="width:48px; height:48px; border-radius:50%; background:#2a5c; color:#fff; font-size:1.2rem; border:none;">&#8681;</button>
+      </div>
+    </div>
 </body>
 </html>

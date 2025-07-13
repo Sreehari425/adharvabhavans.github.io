@@ -68,6 +68,93 @@ movementController.setUIController(uiController);
 cameraController.setUIController(uiController);
 labelManager.setCameraController(cameraController);
 
+// Show new mobile movement controls only on touch devices
+if ('ontouchstart' in window) {
+    const dpad = document.getElementById('mobile-dpad');
+    const updown = document.getElementById('mobile-updown');
+    if (dpad) dpad.style.display = 'block';
+    if (updown) updown.style.display = 'block';
+
+    // Auto-lock pointer controls for mobile so movement works
+    setTimeout(() => {
+        if (cameraController.getCurrentMode && cameraController.getCurrentMode() === 'EXPLORE') {
+            if (cameraController.fpControls && !cameraController.fpControls.isLocked) {
+                cameraController.fpControls.lock();
+            }
+        }
+    }, 500);
+
+    // Map button data-move to movementController flags
+    const moveMap = {
+        up:    { key: 'KeyW' },
+        down:  { key: 'KeyS' },
+        left:  { key: 'KeyA' },
+        right: { key: 'KeyD' },
+        jump:  { key: 'Space' },
+        downward: { key: 'ShiftLeft' },
+    };
+
+    function triggerMove(key, down) {
+        const event = { code: key };
+        const mode = cameraController.getCurrentMode && cameraController.getCurrentMode();
+        console.log(`[D-Pad] ${down ? 'DOWN' : 'UP'} ${key} | Mode: ${mode}`);
+        if (down) {
+            movementController.handleKeyDown(event);
+        } else {
+            movementController.handleKeyUp(event);
+        }
+        // Log movementController flags
+        setTimeout(() => {
+            console.log('[D-Pad Flags]', {
+                moveForward: movementController.moveForward,
+                moveBackward: movementController.moveBackward,
+                moveLeft: movementController.moveLeft,
+                moveRight: movementController.moveRight,
+                moveUp: movementController.moveUp,
+                moveDown: movementController.moveDown,
+            });
+        }, 10);
+    }
+
+    // D-pad buttons (left)
+    document.querySelectorAll('#mobile-dpad .move-btn').forEach(btn => {
+        const move = btn.getAttribute('data-move');
+        if (!moveMap[move]) return;
+        const key = moveMap[move].key;
+        btn.addEventListener('touchstart', e => {
+            e.preventDefault();
+            triggerMove(key, true);
+        }, { passive: false });
+        btn.addEventListener('touchend', e => {
+            e.preventDefault();
+            triggerMove(key, false);
+        }, { passive: false });
+        btn.addEventListener('touchcancel', e => {
+            e.preventDefault();
+            triggerMove(key, false);
+        }, { passive: false });
+    });
+
+    // Up/Down buttons (right)
+    document.querySelectorAll('#mobile-updown .move-btn').forEach(btn => {
+        const move = btn.getAttribute('data-move');
+        if (!moveMap[move]) return;
+        const key = moveMap[move].key;
+        btn.addEventListener('touchstart', e => {
+            e.preventDefault();
+            triggerMove(key, true);
+        }, { passive: false });
+        btn.addEventListener('touchend', e => {
+            e.preventDefault();
+            triggerMove(key, false);
+        }, { passive: false });
+        btn.addEventListener('touchcancel', e => {
+            e.preventDefault();
+            triggerMove(key, false);
+        }, { passive: false });
+    });
+}
+
 // Event listeners
 document.addEventListener('keydown', (e) => movementController.handleKeyDown(e));
 document.addEventListener('keyup', (e) => movementController.handleKeyUp(e));
